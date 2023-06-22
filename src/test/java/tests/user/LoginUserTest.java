@@ -5,6 +5,7 @@ import api.steps.UserSteps;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.hamcrest.Matchers;
@@ -25,6 +26,8 @@ public class LoginUserTest {
     private User user;
     private User authUser;
 
+    private String accessToken;
+
     @Before
     public void setUp() throws InterruptedException {
         RestAssured.baseURI = "https://stellarburgers.nomoreparties.site";
@@ -35,6 +38,8 @@ public class LoginUserTest {
         user = new User(name, email, password);
         authUser = new User();
         userSteps.sendPostRequestApiAuthRegister(user);
+        Response resp = userSteps.sendPostRequestApiAuthRegister(user);
+        accessToken = JsonPath.from(resp.getBody().asString()).get("accessToken");
         Thread.sleep(200);
     }
 
@@ -105,7 +110,7 @@ public class LoginUserTest {
     public void deleteRandomUser() {
         given().log().all()
                 .header("Content-Type", "application/json")
-                .body(user)
+                .header("Authorization", "Bearer " + accessToken)
                 .delete("/api/auth/user");
     }
 }

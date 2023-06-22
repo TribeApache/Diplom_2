@@ -11,17 +11,20 @@ import static io.restassured.RestAssured.given;
 
 public class UserSteps {
 
-    private final static String ERROR_MESSAGE_TEXT_REGISTER = "Email, password and name are required fields";
-    private final static String ERROR_MESSAGE_TEXT_LOGIN = "email or password are incorrect";
-    private final static String ERROR_MESSAGE_TEXT_USER = "You should be authorised";
+    private static final String REGISTER_URL = "/api/auth/register";
+    private static final String LOGIN_URL = "/api/auth/login";
+    private static final String USER_URL = "/api/auth/user";
+    private static final String ERROR_MESSAGE_TEXT_REGISTER = "Email, password and name are required fields";
+    private static final String ERROR_MESSAGE_TEXT_LOGIN = "email or password are incorrect";
+    private static final String ERROR_MESSAGE_TEXT_USER = "You should be authorised";
 
-    @Step("User registration. POST request to /api/auth/register handle")
+    @Step("User registration. POST request to " + REGISTER_URL + " handle")
     public Response sendPostRequestApiAuthRegister(User user) {
         return given().log().all()
                 .header("Content-type", "application/json")
                 .body(user)
                 .when()
-                .post("/api/auth/register");
+                .post(REGISTER_URL);
     }
 
     @Step("Failed server response to user registration attempt")
@@ -33,7 +36,7 @@ public class UserSteps {
     }
 
 
-    @Step("User authorization. POST request to /api/auth/login")
+    @Step("User authorization. POST request to " + LOGIN_URL)
     public Response sendPostRequestApiAuthLogin(User user) {
         return given()
                 .log()
@@ -41,7 +44,7 @@ public class UserSteps {
                 .header("Content-type", "application/json")
                 .body(user)
                 .when()
-                .post("/api/auth/login");
+                .post(LOGIN_URL);
     }
 
     @Step("Failed server response to user authorization attempt")
@@ -52,7 +55,7 @@ public class UserSteps {
                 .and().statusCode(401);
     }
 
-    @Step("Changing user data with authorization. PATCH request to the /api/auth/user handle")
+    @Step("Changing user data with authorization. PATCH request to " + USER_URL + " handle")
     public Response sendPatchRequestWithAuthorizationApiAuthUser(User user, String token) {
         return given()
                 .log()
@@ -61,10 +64,10 @@ public class UserSteps {
                 .header("authorization", token)
                 .body(user)
                 .when()
-                .patch("/api/auth/user");
+                .patch(USER_URL);
     }
 
-    @Step("Changing user data without authorization. PATCH request to /api/auth/user handle")
+    @Step("Changing user data without authorization. PATCH request to " + USER_URL + " handle")
     public Response sendPatchRequestWithoutAuthorizationApiAuthUser(User user) {
         return given()
                 .log()
@@ -72,7 +75,7 @@ public class UserSteps {
                 .header("Content-Type", "application/json")
                 .body(user)
                 .when()
-                .patch("/api/auth/user");
+                .patch(USER_URL);
     }
 
     @Step("Successful server response to user data change")

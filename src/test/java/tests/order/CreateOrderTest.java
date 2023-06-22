@@ -140,7 +140,7 @@ public class CreateOrderTest {
     public void deleteRandomUser() {
         given().log().all()
                 .header("Content-Type", "application/json")
-                .body(user)
+                .header("Authorization", "Bearer " + accessToken)
                 .delete("/api/auth/user");
     }
 }
