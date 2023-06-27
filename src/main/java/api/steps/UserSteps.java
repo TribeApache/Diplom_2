@@ -95,4 +95,13 @@ public class UserSteps {
                 .and().body("message", Matchers.is(ERROR_MESSAGE_TEXT_USER))
                 .and().statusCode(401);
     }
+
+    @Step("Delete user")
+    public void deleteUser(String accessToken) {
+        given().log().all()
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + accessToken)
+                .delete("/api/auth/user");
+    }
+
 }

@@ -108,9 +108,6 @@ public class LoginUserTest {
 
     @After
     public void deleteRandomUser() {
-        given().log().all()
-                .header("Content-Type", "application/json")
-                .header("Authorization", "Bearer " + accessToken)
-                .delete("/api/auth/user");
+        userSteps.deleteUser(accessToken);
     }
 }

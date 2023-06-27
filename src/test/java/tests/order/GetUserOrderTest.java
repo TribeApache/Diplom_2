@@ -13,7 +13,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static io.restassured.RestAssured.given;
 
 public class GetUserOrderTest {
 
@@ -58,9 +57,6 @@ public class GetUserOrderTest {
 
     @After
     public void deleteRandomUser() {
-        given().log().all()
-                .header("Content-Type", "application/json")
-                .header("Authorization", "Bearer " + accessToken)
-                .delete("/api/auth/user");
+        userSteps.deleteUser(accessToken);
     }
 }

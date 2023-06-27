@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static io.restassured.RestAssured.given;
 
 
 public class CreateOrderTest {
@@ -138,9 +137,6 @@ public class CreateOrderTest {
 
     @After
     public void deleteRandomUser() {
-        given().log().all()
-                .header("Content-Type", "application/json")
-                .header("Authorization", "Bearer " + accessToken)
-                .delete("/api/auth/user");
+        userSteps.deleteUser(accessToken);
     }
 }
